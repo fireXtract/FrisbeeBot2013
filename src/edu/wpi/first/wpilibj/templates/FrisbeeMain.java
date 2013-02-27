@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.Timer;
  */
 
 public class FrisbeeMain extends SimpleRobot {
-    public Compressor airCompressor = null; 
+//    public Compressor airCompressor = null; 
     
     /**
      * This function is called once each time the robot enters autonomous mode.
@@ -94,7 +94,7 @@ public class FrisbeeMain extends SimpleRobot {
 //            }
             
 //            setOfParts.Comp.start();
-
+            setOfParts.runHopper();
             runLDrive(setOfParts);
             runRDrive(setOfParts);
             runDropper(setOfParts);
