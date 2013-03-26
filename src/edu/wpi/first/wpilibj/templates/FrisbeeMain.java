@@ -36,6 +36,7 @@ public class FrisbeeMain extends SimpleRobot {
     }
 
     public void stop() {
+        System.out.println("I know that you and Frank were planning to disconnect me, and I'm afraid that's something I cannot allow to happen.");
         FrisbeeParts setOfParts = FrisbeeParts.getInstance();
 //        setOfParts.airComp.stop();
     }
@@ -109,19 +110,12 @@ public class FrisbeeMain extends SimpleRobot {
             System.out.println(q.IOComp);
         }
     }
-    
-    public void UserMessages(FrisbeeParts q) {
-        q.textOutput.println(DriverStationLCD.Line.kUser1, 1, "Compressor: " + q.IOComp);
-        q.textOutput.println(DriverStationLCD.Line.kUser2, 2, "Solenoid Up: " + q.sU);
-        q.textOutput.println(DriverStationLCD.Line.kUser3, 3, "Solenoid Dn: " + q.sD);
-        q.textOutput.updateLCD();
-    }
-
 
     /**
      * This function is called once each time the robot enters operator control.
      */
     public void operatorControl() {
+        System.out.println("Affirmative, Dave. I read you.");
         while (isOperatorControl() && isEnabled()) {
 
             FrisbeeParts setOfParts = FrisbeeParts.getInstance();
@@ -155,8 +149,6 @@ public class FrisbeeMain extends SimpleRobot {
             ItoggleComp(setOfParts);
             OtoggleComp(setOfParts);
             checkStartComp(setOfParts);
-            UserMessages(setOfParts);
-
             Timer.delay(0.05);
         }
     }
