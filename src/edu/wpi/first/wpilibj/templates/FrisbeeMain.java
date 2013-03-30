@@ -7,6 +7,7 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -18,59 +19,57 @@ import edu.wpi.first.wpilibj.Timer;
  * directory.
  */
 public class FrisbeeMain extends SimpleRobot {
-    
     public FrisbeeMain() {
         FrisbeeParts.getInstance().airComp.start();
     }
-    
+
     protected void disabled() {
         getWatchdog().setEnabled(false);
     }
-    
+
     /**
      * This function is called once each time the robot enters autonomous mode.
      */
-
-
     public void autonomous() {
         while (isAutonomous() && isEnabled()) {
             FrisbeeParts s = FrisbeeParts.getInstance();
+            s.cU1.set(true);
             s.cD1.set(false);
-            s.cD2.set(false);
-            s.cU1.set(false);
-            s.cU2.set(false);
-            s.Dropper.set(.5);
-            Timer.delay(1);
-            s.Dropper.set(0);
+            Timer.delay(12.7);
             s.ShootFront.set(1);
             s.ShootBack.set(.8);
-            Timer.delay(.8);
-            s.lU.set(true);
-            Timer.delay(0.2);
-            s.lU.set(false);
             s.lD.set(true);
-            Timer.delay(0.1);
+            s.lU.set(false);
+            Timer.delay(2);
+            s.lD.set(false);
+            s.lU.set(true);
+            Timer.delay(.15);
+            s.lD.set(true);
+            s.lU.set(false);
+            Timer.delay(.15);
+            s.lU.set(false);
             s.lD.set(false);
             s.ShootFront.set(0);
             s.ShootBack.set(0);
+            Timer.delay(0);
         }
-
     }
 
     public void runRFDrive(FrisbeeParts q) {
-        q.RFDrive.set(q.joy1.getAxis(Joystick.AxisType.kY) * -1);
+        q.drive.tankDrive(q.joy1, q.joy2);
     }
 
     public void runRBDrive(FrisbeeParts q) {
-        q.RBDrive.set(q.joy1.getAxis(Joystick.AxisType.kY) * -1);
+        q.RBDrive.set(q.joy1.getAxis(Joystick.AxisType.kY) * -.75);
+
     }
 
     public void runLFDrive(FrisbeeParts q) {
-        q.LFDrive.set(q.joy2.getAxis(Joystick.AxisType.kY) * -1);
+        q.LFDrive.set(q.joy2.getAxis(Joystick.AxisType.kY) * .75);
     }
 
     public void runLBDrive(FrisbeeParts q) {
-        q.LBDrive.set(q.joy2.getAxis(Joystick.AxisType.kY) * -1);
+        q.LBDrive.set(q.joy2.getAxis(Joystick.AxisType.kY) * .75);
     }
 
     public void runShooter1(FrisbeeParts q) {
@@ -78,7 +77,7 @@ public class FrisbeeMain extends SimpleRobot {
     }
 
     public void runShooter2(FrisbeeParts q) {
-        q.ShootBack.set(q.joy1.getRawButton(1) ? 0.8 : 0);
+        q.ShootBack.set(q.joy1.getRawButton(1) ? 1 : 0);
     }
 
     public void runDropper(FrisbeeParts q) {
@@ -98,18 +97,14 @@ public class FrisbeeMain extends SimpleRobot {
     public void climbMechU(FrisbeeParts q) {
         if (q.joy1.getRawButton(4)) {
             q.cD1.set(false);
-            q.cD2.set(false);
             q.cU1.set(true);
-            q.cU2.set(true);
         }
     }
 
     public void climbMechD(FrisbeeParts q) {
         if (q.joy1.getRawButton(5)) {
             q.cU1.set(false);
-            q.cU2.set(false);
             q.cD1.set(true);
-            q.cD2.set(true);
         }
     }
 
@@ -120,6 +115,7 @@ public class FrisbeeMain extends SimpleRobot {
         System.out.println("Affirmative, Dave. I read you.");
         while (isOperatorControl() && isEnabled()) {
             FrisbeeParts setOfParts = FrisbeeParts.getInstance();
+
 
             runLFDrive(setOfParts);
             runLBDrive(setOfParts);
@@ -135,7 +131,7 @@ public class FrisbeeMain extends SimpleRobot {
 
             climbMechU(setOfParts);
             climbMechD(setOfParts);
-            
+
             Timer.delay(0.05);
         }
     }
