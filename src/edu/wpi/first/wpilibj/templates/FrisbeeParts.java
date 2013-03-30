@@ -25,10 +25,6 @@ public class FrisbeeParts {
     private final static int BShootP = 5;
     private final static int FShootP = 6;
     private final static int DropperP = 7;
-    public Talon LFDrive;
-    public Talon LBDrive;
-    public Talon RFDrive;
-    public Talon RBDrive;
     public Talon ShootFront;
     public Talon ShootBack;
     public Talon Dropper;
@@ -42,10 +38,6 @@ public class FrisbeeParts {
     private static FrisbeeParts partInst;
 
     public FrisbeeParts() {
-        LFDrive = new Talon(LFDriveP);
-        LBDrive = new Talon(LBDriveP);
-        RFDrive = new Talon(RFDriveP);
-        RBDrive = new Talon(RBDriveP);
         drive = new RobotDrive(LFDriveP, LBDriveP, RFDriveP, RBDriveP);
 
         ShootFront = new Talon(FShootP);

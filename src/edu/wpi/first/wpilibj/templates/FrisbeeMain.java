@@ -55,21 +55,8 @@ public class FrisbeeMain extends SimpleRobot {
         }
     }
 
-    public void runRFDrive(FrisbeeParts q) {
+    public void DriveMec(FrisbeeParts q) {
         q.drive.tankDrive(q.joy1, q.joy2);
-    }
-
-    public void runRBDrive(FrisbeeParts q) {
-        q.RBDrive.set(q.joy1.getAxis(Joystick.AxisType.kY) * -.75);
-
-    }
-
-    public void runLFDrive(FrisbeeParts q) {
-        q.LFDrive.set(q.joy2.getAxis(Joystick.AxisType.kY) * .75);
-    }
-
-    public void runLBDrive(FrisbeeParts q) {
-        q.LBDrive.set(q.joy2.getAxis(Joystick.AxisType.kY) * .75);
     }
 
     public void runShooter1(FrisbeeParts q) {
@@ -116,11 +103,7 @@ public class FrisbeeMain extends SimpleRobot {
         while (isOperatorControl() && isEnabled()) {
             FrisbeeParts setOfParts = FrisbeeParts.getInstance();
 
-
-            runLFDrive(setOfParts);
-            runLBDrive(setOfParts);
-            runRFDrive(setOfParts);
-            runRBDrive(setOfParts);
+            DriveMec(setOfParts);
 
             runDropper(setOfParts);
 
