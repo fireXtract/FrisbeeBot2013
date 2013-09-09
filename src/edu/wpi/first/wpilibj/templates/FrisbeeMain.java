@@ -6,9 +6,6 @@
 /*----------------------------------------------------------------------------*/
 package edu.wpi.first.wpilibj.templates;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -18,9 +15,16 @@ import edu.wpi.first.wpilibj.Timer;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class FrisbeeMain extends SimpleRobot {
+public class FrisbeeMain extends FrisbeeParts {
+
+    boolean fireMode = true;
+
     public FrisbeeMain() {
-        FrisbeeParts.getInstance().airComp.start();
+        airComp.start();
+    }
+
+    public void stop() {
+        airComp.stop();
     }
 
     protected void disabled() {
@@ -31,40 +35,78 @@ public class FrisbeeMain extends SimpleRobot {
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
+        int count = 0;
+
         while (isAutonomous() && isEnabled()) {
-            FrisbeeParts s = FrisbeeParts.getInstance();
-            s.cU1.set(true);
-            s.cD1.set(false);
-            Timer.delay(12.7);
-            s.ShootFront.set(1);
-            s.ShootBack.set(.8);
-            s.lD.set(true);
-            s.lU.set(false);
-            Timer.delay(2);
-            s.lD.set(false);
-            s.lU.set(true);
-            Timer.delay(.15);
-            s.lD.set(true);
-            s.lU.set(false);
-            Timer.delay(.15);
-            s.lU.set(false);
-            s.lD.set(false);
-            s.ShootFront.set(0);
-            s.ShootBack.set(0);
-            Timer.delay(0);
+            System.out.println("Lalala " + count);
+
+            if (count <= 160) {
+                cU1.set(true);
+                cD1.set(false);
+                cD1.set(true);
+            }
+            //Timer.delay(8);
+
+            if (count > 160 && count <= 200) {
+                System.out.println("AUTOFIX");
+                ShootFront.set(1);
+                ShootBack.set(.8);
+                lD.set(true);
+                lU.set(false);
+            }
+            //Timer.delay(2);
+            if (count > 200 && count <= 203) {
+                System.out.println("AUTOFIxX");
+                lD.set(false);
+                lU.set(true);
+            }
+            //Timer.delay(.15);
+            if (count > 203 && count <= 206) {
+                System.out.println("AUTOFIxxX");
+                lD.set(true);
+                lU.set(false);
+            }
+            //Timer.delay(.15);
+            if (count > 206) { //&& count <= 212) {
+//                Dropper.set(.5);
+                lU.set(false);
+                lD.set(false);
+                ShootFront.set(0);
+                ShootBack.set(0);
+
+                //Timer.delay(4);
+            }
+
+            count++;
+            Timer.delay(0.05);
         }
     }
 
-    public void DriveMec(FrisbeeParts q) {
-        q.drive.tankDrive(q.joy1, q.joy2);
+    public void driveMec(FrisbeeParts q) {
+//        q.drive.tankDrive(q.joy1.getAxis(Joystick.AxisType.kY), q.joy2.getAxis(Joystick.AxisType.kY));
+
+        if (q.joy1.getRawButton(8)) {
+            fireMode = true;
+        } else if (q.joy1.getRawButton(9)) {
+            fireMode = false;
+        }
+        if (fireMode == true) {
+            q.drive.mecanumDrive_Cartesian((q.joy1.getY() * -1), q.joy1.getX(), q.joy2.getY(), 0); // Mechanam wheel rollers should form an x when looking directaly down from the top
+        }
+
+//        \\\1     2///
+//        
+//        
+//        
+//        ///3     4\\\
     }
 
     public void runShooter1(FrisbeeParts q) {
-        q.ShootFront.set(q.joy1.getRawButton(1) ? 1 : 0);
+        q.ShootFront.set(q.joy1.getRawButton(1) ? q.joy1.getZ() : 0);
     }
 
     public void runShooter2(FrisbeeParts q) {
-        q.ShootBack.set(q.joy1.getRawButton(1) ? 1 : 0);
+        q.ShootBack.set(q.joy1.getRawButton(1) ? q.joy1.getZ() : 0);
     }
 
     public void runDropper(FrisbeeParts q) {
@@ -101,19 +143,19 @@ public class FrisbeeMain extends SimpleRobot {
     public void operatorControl() {
         System.out.println("Affirmative, Dave. I read you.");
         while (isOperatorControl() && isEnabled()) {
-            FrisbeeParts setOfParts = FrisbeeParts.getInstance();
 
-            DriveMec(setOfParts);
 
-            runDropper(setOfParts);
+            driveMec(this);
 
-            runShooter1(setOfParts);
-            runShooter2(setOfParts);
+            runDropper(this);
 
-            runLauncher(setOfParts);
+            runShooter1(this);
+            runShooter2(this);
 
-            climbMechU(setOfParts);
-            climbMechD(setOfParts);
+            runLauncher(this);
+
+            climbMechU(this);
+            climbMechD(this);
 
             Timer.delay(0.05);
         }
